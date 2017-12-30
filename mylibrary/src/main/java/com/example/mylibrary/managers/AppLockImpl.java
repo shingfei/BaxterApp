@@ -1,4 +1,4 @@
-package com.github.omadahealth.lollipin.lib.managers;
+package com.example.mylibrary.managers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,12 +9,12 @@ import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 
-import com.github.omadahealth.lollipin.lib.PinActivity;
-import com.github.omadahealth.lollipin.lib.PinCompatActivity;
-import com.github.omadahealth.lollipin.lib.PinFragmentActivity;
-import com.github.omadahealth.lollipin.lib.encryption.Encryptor;
-import com.github.omadahealth.lollipin.lib.enums.Algorithm;
-import com.github.omadahealth.lollipin.lib.interfaces.LifeCycleInterface;
+import com.example.mylibrary.PinActivity;
+import com.example.mylibrary.PinCompatActivity;
+import com.example.mylibrary.PinFragmentActivity;
+import com.example.mylibrary.encryption.Encryptor;
+import com.example.mylibrary.enums.Algorithm;
+import com.example.mylibrary.interfaces.LifeCycleInterface;
 
 import java.security.SecureRandom;
 import java.util.Arrays;

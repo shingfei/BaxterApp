@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.andexert.library.RippleAnimationListener;
 import com.andexert.library.RippleView;
-import com.github.omadahealth.lollipin.lib.R;
-import com.github.omadahealth.lollipin.lib.interfaces.KeyboardButtonClickedListener;
+import com.example.mylibrary.R;
+import com.example.mylibrary.interfaces.KeyboardButtonClickedListener;
 
 /**
  * Created by stoyan and oliviergoutay on 1/13/15.
