@@ -28,4 +28,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.google.android.gms:play-services:11.6.2'
     compile project(path: ':mylibrary')
+    compile 'com.github.GoodieBag:Pinview:v1.3'
 }

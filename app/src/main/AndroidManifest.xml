@@ -31,19 +31,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".pincodeActivity"
             android:label="@string/PinActivity"
+            android:theme="@style/AppTheme">
+
+        </activity>
+
+        <activity
+            android:name=".mainMenu"
+            android:label="@string/mainMenu"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
         <activity
-
             android:name=".scannerActivity"
             android:label="Read barcode">
-
         </activity>
+
         <activity
 
             android:name=".BarcodeCaptureActivity"
