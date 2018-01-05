@@ -78,7 +78,7 @@ public class KeyboardView extends LinearLayout implements View.OnClickListener {
 
         int id = v.getId();
         if(id == R.id.pin_code_button_0) {
-            mKeyboardButtonClickedListener.onKeyboardClick(KeyboardButtonEnum.BUTTON_0);
+            mKeyboardButtonClickedListener.onKeyboardClick(KeyboardButtonEnum.BUTTON_1);
         } else if(id == R.id.pin_code_button_1) {
             mKeyboardButtonClickedListener.onKeyboardClick(KeyboardButtonEnum.BUTTON_1);
         } else if(id == R.id.pin_code_button_2) {

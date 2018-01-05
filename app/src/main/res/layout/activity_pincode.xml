@@ -6,50 +6,71 @@
     android:layout_height="match_parent"
     tools:context="com.example.sf.testapp.pincodeActivity">
 
-    <Button
-        android:id="@+id/confirmPin"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
+
+    <com.github.omadahealth.typefaceview.TypefaceTextView
+        android:id="@+id/pin_code_fingerprint_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="142dp"
-        android:layout_marginEnd="148dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="321dp"
-        android:text="Button"
-        android:onClick="menuActivity"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="155dp"
+        android:maxLines="1"
+        android:textSize="@dimen/pin_code_forgot_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/pin_code_fingerprint_imageview"
+        tools:text="@string/pin_code_fingerprint_text" />
+
+
+    <com.andrognito.pinlockview.PinLockView
+        android:id="@+id/pin_lock_view"
+        android:layout_width="183dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginStart="100dp"
+        app:keypadTextColor="@color/blue_gray"
+        app:layout_constraintBottom_toTopOf="@+id/pin_code_fingerprint_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/profile_name"
+        android:layout_width="256dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="34dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginStart="163dp"
-        android:layout_marginTop="269dp"
-        android:text="Pincode screen"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginBottom="46dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="96dp"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Voer uw pincode"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/indicator_dots"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.goodiebag.pinview.Pinview
-        android:id="@+id/pinView"
+    <com.andrognito.pinlockview.IndicatorDots
+        android:id="@+id/indicator_dots"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="185dp"
-        app:forceKeyboard="true"
-        app:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        android:layout_height="8dp"
+        android:layout_below="@id/profile_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="52dp"
+        android:layout_marginEnd="144dp"
+        android:layout_marginStart="144dp"
+        app:layout_constraintBottom_toTopOf="@+id/pin_lock_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:password="true"
-        app:pinHeight="40dp"
-        app:pinLength="5"
-        app:pinWidth="40dp" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
