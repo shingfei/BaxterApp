@@ -12,31 +12,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical"></LinearLayout>
 
-    <com.github.omadahealth.typefaceview.TypefaceTextView
-        android:id="@+id/pin_code_fingerprint_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="155dp"
-        android:maxLines="1"
-        android:textSize="@dimen/pin_code_forgot_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pin_code_fingerprint_imageview"
-        tools:text="@string/pin_code_fingerprint_text" />
-
 
     <com.andrognito.pinlockview.PinLockView
         android:id="@+id/pin_lock_view"
         android:layout_width="183dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="64dp"
         android:layout_marginEnd="100dp"
         android:layout_marginStart="100dp"
         app:keypadTextColor="@color/blue_gray"
-        app:layout_constraintBottom_toTopOf="@+id/pin_code_fingerprint_textview"
+        app:layout_constraintBottom_toTopOf="@+id/logoffPin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearLayout" />
 
@@ -72,5 +57,17 @@
         app:layout_constraintBottom_toTopOf="@+id/pin_lock_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/logoffPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginStart="278dp"
+        android:text="Log off"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout" />
 
 </android.support.constraint.ConstraintLayout>

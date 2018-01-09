@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class scannerActivity extends Activity implements View.OnClickListener {
     private TextView statusMessage;
     private TextView barcodeValue;
     private TextView informationValue;
+    private CheckBox checkItem;
 
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
@@ -50,10 +52,10 @@ public class scannerActivity extends Activity implements View.OnClickListener {
         statusMessage = (TextView)findViewById(R.id.status_message);
         barcodeValue = (TextView)findViewById(R.id.barcode_value);
         informationValue = (TextView)findViewById(R.id.informationText);
-
         useFlash = (CompoundButton) findViewById(R.id.use_flash);
 
         findViewById(R.id.read_barcode).setOnClickListener(this);
+
     }
 
     /**

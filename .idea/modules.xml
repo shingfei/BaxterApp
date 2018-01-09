@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BaxterApp.iml" filepath="$PROJECT_DIR$/BaxterApp.iml" />
-      <module fileurl="file://C:\Users\SF\Desktop\Testapp\BaxterApp\Testapp.iml" filepath="C:\Users\SF\Desktop\Testapp\BaxterApp\Testapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
     </modules>
