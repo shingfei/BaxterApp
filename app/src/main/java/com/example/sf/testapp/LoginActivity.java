@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View view) {
                // attemptLogin();
                 pinActivity(view);
+                finish();
             }
         });
 
@@ -99,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
             //preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR
             return true;
         }

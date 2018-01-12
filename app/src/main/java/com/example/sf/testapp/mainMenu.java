@@ -81,6 +81,7 @@ public class mainMenu extends AppCompatActivity {
             public void onClick(View view)
             {
                 pinActivity(view);
+                finish();
             }
         });
     }
