@@ -30,6 +30,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/loginText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10pt"
+                android:text="Voer uw gegevens in"/>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -69,9 +76,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:onClick="pinActivity"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold"
-                android:onClick="pinActivity"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>

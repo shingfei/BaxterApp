@@ -20,17 +20,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.mylibrary.PinActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +47,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             "foo@example.com:hello", "bar@example.com:world"
     };
 
+    /*
+    Starting new activity for the pincode screen.
+     */
     private void pinActivity(View view)
     {
         Intent pincodeActivity = new Intent(this,pincodeActivity.class);
@@ -56,56 +58,70 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String dummyMail = "hi";
+    private TextView loginText;
+    private String fillInPass = "asd123";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+        loginText = (TextView) findViewById(R.id.loginText);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-               // attemptLogin();
-                pinActivity(view);
-                finish();
+                //On click on eMailSignInButton the method will check if it's equal to dummyMail(can be replaced) and equal to fillInPass (can be replaced)
+                if(mEmailView.getText().toString().equals(dummyMail))
+                {
+                    if (mPasswordView.getText().toString().equals(fillInPass))
+                    {
+                        pinActivity(view); //calls the methode where the new pinactivity resides.
+                        loginText.setText("Voer uw gegevens in");
+                        finish(); //Ends the current activity
+                    }
+                    else
+                    {
+                        loginText.setText("Incorrect password");
+                        System.out.println("Incorrect password");
+                    }
+                }
+                else
+                {
+                    loginText.setText("Incorrect email");
+                    System.out.println("Incorrect email");
+                }
+
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
-
+    //Supresses the back button on a phone or ends the app itself
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             finish();
-            //preventing default implementation previous to android.os.Build.VERSION_CODES.ECLAIR
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
+    /*
+    Ignore everything below, I didn't use those methodes or didn't touch them
+     */
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
