@@ -26,12 +26,10 @@ public class mainMenu extends AppCompatActivity {
 
     private TextView informationValue;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-
 
     private void scannerActivity(View view)
     {
@@ -51,7 +49,6 @@ public class mainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -80,6 +77,7 @@ public class mainMenu extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+
                 pinActivity(view);
                 finish();
             }

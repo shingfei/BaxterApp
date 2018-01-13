@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -36,11 +37,14 @@ public class scannerActivity extends Activity implements View.OnClickListener {
 
     // use a compound button so either checkbox or switch widgets work.
     private CompoundButton useFlash;
+    private CompoundButton verifyCheck;
     private TextView statusMessage;
     private TextView barcodeValue;
     private TextView informationValue;
-    private CheckBox checkItem;
-
+    private TextView topLabel;
+    private TextView secondBottomLabel;
+    private TextView bottomLabel;
+    private Button submitButton;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeMain";
 
@@ -53,15 +57,36 @@ public class scannerActivity extends Activity implements View.OnClickListener {
         barcodeValue = (TextView)findViewById(R.id.barcode_value);
         informationValue = (TextView)findViewById(R.id.informationText);
         useFlash = (CompoundButton) findViewById(R.id.use_flash);
+        verifyCheck = (CompoundButton) findViewById(R.id.checkItem);
+        topLabel = (TextView)findViewById(R.id.topScannerLabel);
+        secondBottomLabel = (TextView)findViewById(R.id.secondBottomLabel);
+        bottomLabel = (TextView)findViewById(R.id.BottomScannerLabel);
+        submitButton = (Button)findViewById(R.id.submitButton);
 
         findViewById(R.id.read_barcode).setOnClickListener(this);
+
+        submitButton.setOnClickListener(new View.OnClickListener() //Submit the item that was scanned before
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(verifyCheck.isChecked() == true)
+                {
+                    System.out.println("submit this one");
+                }
+                else
+                {
+                    System.out.println("uncheck this one");
+                }
+            }
+        });
 
     }
 
     /**
      * Called when a view has been clicked.
      *
-     * @param v The view that was clicked.
+     * @param v The view that was clicked and is the read & submit button
      */
     @Override
     public void onClick(View v) {
@@ -72,7 +97,6 @@ public class scannerActivity extends Activity implements View.OnClickListener {
             intent.putExtra(BarcodeCaptureActivity.UseFlash, useFlash.isChecked());
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
         }
-
     }
 
     /**
@@ -101,12 +125,24 @@ public class scannerActivity extends Activity implements View.OnClickListener {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_BARCODE_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
-                if (data != null) {
+                if (data != null) //checking if there's any data coming in from a barcode
+                {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     statusMessage.setText(R.string.barcode_success);
-                    barcodeValue.setText(barcode.displayValue);
-                    informationValue.setText("Informatie over het toedienen van het medicijn");
+                    barcodeValue.setText(barcode.displayValue); //set your own text here.
+                    informationValue.setText("Informatie over het toedienen van het medicijn");//set your own text here.
+                    topLabel.setText("iets");//set your own text here.
+                    secondBottomLabel.setText("ook iets ");//set your own text here.
+                    bottomLabel.setText("Jajaja niet verwacht he");//set your own text here.
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                    if(verifyCheck.isChecked() == true)//Checking if the submit compoundbutton was set on true.
+                    {
+                        System.out.println("submit & scan");
+                    }
+                    else
+                    {
+                        System.out.println("no check");
+                    }
                 } else {
                     statusMessage.setText(R.string.barcode_failure);
                     Log.d(TAG, "No barcode captured, intent data is null");
