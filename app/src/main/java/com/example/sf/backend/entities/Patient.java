@@ -1,4 +1,4 @@
-package com.example.backend.entities;
+package com.example.sf.backend.entities;
 
 /**
  * Created by PascalRoose on 11-Jan-18.

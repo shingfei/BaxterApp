@@ -1,4 +1,4 @@
-package com.example.backend.entities;
+package com.example.sf.backend.entities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -1,4 +1,4 @@
-package com.example.backend.api;
+package com.example.sf.backend.api;
 
 /**
  * Created by PascalRoose on 11-Jan-18.
@@ -8,8 +8,8 @@ import android.annotation.TargetApi;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.example.backend.entities.*;
-import com.example.backend.main.Logic;
+import com.example.sf.backend.entities.*;
+import com.example.sf.backend.main.Logic;
 
 public class MockDatabase
 {
@@ -32,7 +32,7 @@ public class MockDatabase
     }
 
     public static boolean checkLogin(String verzorgerNummer, String wachtwoord){
-        if(verzorgerNummer.equals("18041998") && wachtwoord.equals("geheim")){
+        if(verzorgerNummer.equals("test@baxterapp.nl") && wachtwoord.equals("geheim")){
             Logic.setVerzorger(new Verzorger(verzorgerNummer, "Pascal Roose", "ae3c7ffe"));
             return true;
         }

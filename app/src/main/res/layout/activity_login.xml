@@ -35,8 +35,8 @@
                 android:id="@+id/loginText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="10pt"
-                android:text="Voer uw gegevens in"/>
+                android:text="Enter your credentials"
+                android:textSize="10pt" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

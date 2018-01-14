@@ -1,7 +1,6 @@
 package com.example.sf.testapp;
 
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,15 +8,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andrognito.pinlockview.PinLockView;
-import com.goodiebag.pinview.Pinview;
 import com.andrognito.pinlockview.IndicatorDots;
 import com.andrognito.pinlockview.PinLockListener;
-import com.andrognito.pinlockview.PinLockView;
-
-import org.w3c.dom.Text;
 
 
 public class pincodeActivity extends AppCompatActivity {
@@ -29,7 +23,7 @@ public class pincodeActivity extends AppCompatActivity {
     private boolean pinCreated = false;
     private int storedPin = 0;
 
-    //Activity declaration
+    //Main activity declaration
     private void mainActivity()
     {
         Intent mainMenuActivity = new Intent(this,mainMenu.class);
@@ -37,6 +31,7 @@ public class pincodeActivity extends AppCompatActivity {
         return;
     }
 
+    //Login activity declaration
     private void loginActivity(View view)
     {
         Intent loginActivity = new Intent(this,LoginActivity.class);
@@ -101,11 +96,13 @@ public class pincodeActivity extends AppCompatActivity {
             return false;
         }
 
+        //Leave overridden functions as is
         @Override
         public void onEmpty() {
             Log.d(TAG, "Pin empty");
         }
 
+        //Leave overridden functions as is
         @Override
         public void onPinChange(int pinLength, String intermediatePin) {
             Log.d(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
@@ -123,6 +120,7 @@ public class pincodeActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    //On create events
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -139,22 +137,25 @@ public class pincodeActivity extends AppCompatActivity {
 
         if(pinCreated == false)
         {
-            errorLabel.setText("Maak uw pin");
+            errorLabel.setText("Enter a new pin");
         }
         else
         {
-            errorLabel.setText("Voer uw pin in");
+            errorLabel.setText("Enter your pin");
         }
 
-        changePin.setOnClickListener(new View.OnClickListener()//Allowing the user reset his/her pincode if the user desires to, but he/she has to re-enter the mail & password.
+        //Reset pin button
+        changePin.setOnClickListener(new View.OnClickListener()
         {
-        @Override
-        public void onClick(View view)
-        {
-            pinCreated = false;
-            loginActivity(view);
-        }
-    });
+            @Override
+            public void onClick(View view)
+            {
+                pinCreated = false;
+                loginActivity(view);
+            }
+        });
+
+        //Logoff button
         logOffPin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
