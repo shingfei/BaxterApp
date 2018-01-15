@@ -2,6 +2,7 @@ package com.example.sf.testapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +29,8 @@ public class pincodeActivity extends AppCompatActivity {
     private String pinCreate = "pinCreate";
     private SharedPreferences pincodeSaved;
     private SharedPreferences pincodeCreated;
-
+    private SharedPreferences savedLogin;
+    private SharedPreferences.Editor editor;
 
     //On create events
     @Override
@@ -38,6 +40,9 @@ public class pincodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pincode);
         pincodeSaved = getPreferences(MODE_PRIVATE);
         pincodeCreated = getPreferences(MODE_PRIVATE);
+        savedLogin = getApplicationContext().getSharedPreferences("SavedLogin",MODE_PRIVATE);
+        editor = savedLogin.edit();
+        editor.putBoolean("SavedLogin",false).commit();
         //Shared viarable
         pinCreated = pincodeCreated.getBoolean(pinCreate,false);
         savedPincode = pincodeSaved.getInt(pincode,0);
@@ -50,7 +55,6 @@ public class pincodeActivity extends AppCompatActivity {
 
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
-        SharedPreferences sharedPref= getSharedPreferences("mypref", 0);
 
         if(pinCreated == false)
         {
@@ -79,7 +83,9 @@ public class pincodeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-
+                editor.putBoolean("SavedLogin",true).commit();
+                pincodeSaved.edit().clear().commit();
+                pincodeCreated.edit().clear().commit();
                 loginActivity(view);
                 finish();
             }

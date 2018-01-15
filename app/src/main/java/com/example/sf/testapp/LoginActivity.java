@@ -1,6 +1,8 @@
 package com.example.sf.testapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -23,6 +25,10 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private TextView loginText;
+    private SharedPreferences login;
+    private String savedLoginName = "Login";
+    private boolean savedLogin;
+    private boolean clear;
 
     //Oncreate activities. Main code goes here
     @Override
@@ -30,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        login = getPreferences(MODE_PRIVATE);
+        SharedPreferences recieveClear = getApplication().getSharedPreferences("SavedLogin",MODE_PRIVATE);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -37,19 +45,48 @@ public class LoginActivity extends AppCompatActivity {
         loginText = (TextView) findViewById(R.id.loginText);
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
 
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (UserLogin.login(mEmailView.getText().toString(), mPasswordView.getText().toString())) {
-                    pinActivity(view); //calls the methode where the new pinactivity resides.
-                    finish(); //Ends the current activity
-                } else {
-                    loginText.setText("Email and/or password incorrect");
-                    mEmailView.setText("");
-                    mPasswordView.setText("");
+
+        if(recieveClear.getBoolean("SavedLogin",clear) == true)
+        {
+            mEmailSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (UserLogin.login(mEmailView.getText().toString(), mPasswordView.getText().toString())) {
+                        pinActivity(view); //calls the methode where the new pinactivity resides.
+                        savedLogin = true;
+                        login.edit().putBoolean(savedLoginName, savedLogin).commit();
+                        finish(); //Ends the current activity
+                    } else {
+                        loginText.setText("Email and/or password incorrect");
+                        mEmailView.setText("");
+                        mPasswordView.setText("");
+                    }
                 }
-            }
-        });
+            });
+        }
+        else if(login.getBoolean(savedLoginName,savedLogin) == true)
+        {
+        Intent pincodeActivity = new Intent(this, com.example.sf.testapp.pincodeActivity.class);
+        startActivity(pincodeActivity);
+        }
+        else
+        {
+            mEmailSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (UserLogin.login(mEmailView.getText().toString(), mPasswordView.getText().toString())) {
+                        pinActivity(view); //calls the methode where the new pinactivity resides.
+                        savedLogin = true;
+                        login.edit().putBoolean("Login", savedLogin).commit();
+                        finish(); //Ends the current activity
+                    } else {
+                        loginText.setText("Email and/or password incorrect");
+                        mEmailView.setText("");
+                        mPasswordView.setText("");
+                    }
+                }
+            });
+        }
 
     }
 
