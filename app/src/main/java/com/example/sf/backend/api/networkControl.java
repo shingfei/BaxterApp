@@ -14,6 +14,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.AsyncTask;
 
+import com.example.sf.testapp.R;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -80,7 +82,7 @@ public class networkControl extends AppCompatActivity {
             }
         });
     }
-
+//////
     private class ConnectBT extends AsyncTask<Void, Void, Void>  {
         private boolean ConnectSuccess = true; //if it's here, it's almost connected
 

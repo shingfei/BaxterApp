@@ -64,15 +64,13 @@
 
         </activity>
 		
-		<activity android:name=".DeviceList">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+		<activity
+            android:name="com.example.sf.backend.api.DeviceList"
+            android:label="Devicelist"
+            android:screenOrientation="portrait">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        
-		<activity android:name=".networkControl"></activity>
+
     </application>
 
 </manifest>

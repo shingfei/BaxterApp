@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.larsfikkers.proj56v2.DeviceList">
+    tools:context="com.example.sf.backend.api.DeviceList">
 
     <TextView
         android:id="@+id/Label1"
@@ -31,10 +31,22 @@
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="105dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="16dp"
         android:text="show paired devices"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/returnButtonDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginStart="66dp"
+        android:text="Return"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button1" />
 
 </android.support.constraint.ConstraintLayout>

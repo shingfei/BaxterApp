@@ -26,10 +26,10 @@ public class mainMenu extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    private void scannerActivity(View view)
+    private void deviceActivity(View view)
     {
-        Intent scannerActivity = new Intent(this, com.example.sf.testapp.scannerActivity.class);
-        startActivity(scannerActivity);
+        Intent deviceActivity = new Intent(this, com.example.sf.backend.api.DeviceList.class);
+        startActivity(deviceActivity);
         return;
     }
 
@@ -58,12 +58,12 @@ public class mainMenu extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.scanner);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+        Button deviceList = (Button) findViewById(R.id.deviceList);
+        deviceList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                scannerActivity(view);
+                deviceActivity(view);
             }
         });
 

@@ -2,6 +2,7 @@ package com.example.sf.backend.api;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.content.Intent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+
+import com.example.sf.testapp.R;
 
 public class DeviceList extends AppCompatActivity {
 
@@ -28,7 +31,7 @@ public class DeviceList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
-
+        Button returnButtonDevice = (Button)findViewById(R.id.returnButtonDevice);
         btnPaired = (Button)findViewById(R.id.button1);
         deviceList = (ListView)findViewById(R.id.listView);
 
@@ -59,6 +62,32 @@ public class DeviceList extends AppCompatActivity {
                 pairedDevicesList(); //method that will be called
             }
         });
+
+        returnButtonDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                mainActivity(view);
+                finish();
+            }
+        });
+    }
+
+
+    private void mainActivity(View view)
+    {
+        Intent mainActivity = new Intent(this, com.example.sf.testapp.mainMenu.class);
+        startActivity(mainActivity);
+        return;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private void pairedDevicesList()
@@ -91,7 +120,7 @@ public class DeviceList extends AppCompatActivity {
             String info = ((TextView) v).getText().toString();
             String address = info.substring(info.length() - 17);
             // Make an intent to start next activity.
-            Intent i = new Intent(DeviceList.this, networkControl.class);
+            Intent i = new Intent(DeviceList.this,com.example.sf.testapp.scannerActivity.class);
             //Change the activity.
             i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
             startActivity(i);

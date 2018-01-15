@@ -37,15 +37,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="Read and Submit" />
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@+id/use_flash"
+        android:text="Scan" />
 
     <CheckBox
         android:id="@+id/use_flash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/read_barcode"
-        android:layout_alignParentStart="true"
+
+        android:layout_above="@+id/submitButton"
+        android:layout_alignStart="@+id/submitButton"
         android:checked="false"
         android:text="@string/use_flash" />
 
@@ -53,9 +55,8 @@
         android:id="@+id/checkItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/read_barcode"
-        android:layout_alignBottom="@+id/read_barcode"
-        android:layout_marginEnd="12dp"
+        android:layout_above="@+id/read_barcode"
+        android:layout_alignStart="@+id/read_barcode"
         android:text="Check" />
 
     <TextView
@@ -69,9 +70,9 @@
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/read_barcode"
-        android:layout_marginEnd="21dp"
-        android:layout_toStartOf="@+id/read_barcode"
+        android:layout_alignBaseline="@+id/read_barcode"
+        android:layout_alignBottom="@+id/read_barcode"
+        android:layout_centerHorizontal="true"
         android:text="Submit" />
 
     <TextView
@@ -99,5 +100,14 @@
         android:layout_below="@+id/status_message"
         android:layout_marginTop="39dp"
         />
+
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="Return" />
 
 </RelativeLayout>
