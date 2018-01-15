@@ -1,30 +1,33 @@
 package com.example.sf.backend.api;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.bluetooth.BluetoothSocket;
-import android.content.Intent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.os.AsyncTask;
+        import android.os.Handler;
+        import android.support.v7.app.AppCompatActivity;
+        import android.os.Bundle;
+        import android.bluetooth.BluetoothSocket;
+        import android.content.Intent;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.EditText;
+        import android.widget.TextView;
+        import android.widget.Toast;
+        import android.app.ProgressDialog;
+        import android.bluetooth.BluetoothAdapter;
+        import android.bluetooth.BluetoothDevice;
+        import android.os.AsyncTask;
 
-import com.example.sf.testapp.R;
+        import com.example.sf.testapp.R;
 
-import org.json.JSONObject;
+        import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.UUID;
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.util.ArrayList;
+        import java.util.UUID;
 
 public class networkControl extends AppCompatActivity {
+    private Round round = new Round(); //contains the array with baxterItems
     Button btnGetRound, btnDis, btnScan;
+    TextView patientText,medicijnText,patientNaamText,medicijnNaamText;
     String address = null;
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
@@ -41,14 +44,19 @@ public class networkControl extends AppCompatActivity {
         Intent newint = getIntent();
         address = newint.getStringExtra(DeviceList.EXTRA_ADDRESS);
 
-        //view of the ledControl layout
+        //view of the network control layout
         setContentView(R.layout.activity_network_control);
 
         //call the widgtes
         btnGetRound = (Button)findViewById(R.id.button);
         btnDis = (Button)findViewById(R.id.button2);
+        btnScan = (Button)findViewById(R.id.button3);
+        patientText = (TextView)findViewById(R.id.textView);
+        medicijnText = (TextView)findViewById(R.id.textView2);
+        patientNaamText = (TextView)findViewById(R.id.textView5);
+        medicijnNaamText = (TextView)findViewById(R.id.textView6);
 
-
+        //connects the local device to the bleutooth device
         ConnectBT connector = new ConnectBT();
         connector.onPreExecute();
         connector.onPostExecute(connector.doInBackground());
@@ -57,33 +65,39 @@ public class networkControl extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 requestRoundInfo();
+                //updateTextFieldsHandler.post(updateTextFields);
             }
         });
 
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //scan functie hier
-                requestBaxterItem(new String());
-                try {
-                    StringBaxterItemParser parser = new StringBaxterItemParser();
-                    BaxterItem baxterItem = parser.jsonParser(waitForInput(btSocket.getInputStream()));
-                    //display baxter item
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
+
+                /*
+                --goes to scanfunction.
+                 */
             }
         });
 
         btnDis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Disconnect(); //close connection
+
+                /*
+                --self explanatory.
+                 */
+
+                Disconnect();
             }
         });
     }
-//////
+
     private class ConnectBT extends AsyncTask<Void, Void, Void>  {
+
+        /*
+        --connects to selected device in the background.
+         */
+
         private boolean ConnectSuccess = true; //if it's here, it's almost connected
 
         @Override
@@ -133,7 +147,12 @@ public class networkControl extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
     }
 
-    private void Disconnect() {
+    public void Disconnect() {
+
+        /*
+        --self explanatory
+         */
+
         if (btSocket!=null) //If the btSocket is busy
         {
             try
@@ -146,28 +165,44 @@ public class networkControl extends AppCompatActivity {
         finish(); //return to the first layout
     }
 
-    private JSONObject parseJsonBarcode(String s) {
-        JSONObject object = new JSONObject();
-        try {
-            object.put("barcode",s);
-        } catch (Exception e){
-            System.out.println(e);
-        }
-        return object;
-    }
+    private void requestRoundInfo() {
 
-    private void requestBaxterItem(String barcode) {
-        try{
-            btSocket.getOutputStream().write(barcode.getBytes());
+        /*
+        --sends 'startRound' to the client.
+        --catch response of client in an string.
+        --parse it into an array of Baxteritems.
+        --sets the roundarray in round object for easy access.
+         */
+
+        String inputString;
+
+        try {
+            btSocket.getOutputStream().write("startRound".getBytes());
+            inputString = waitForInput(btSocket.getInputStream());
+            StringBaxterItemParser parser = new StringBaxterItemParser();
+
+            BaxterItem[] roundArray = new BaxterItem[parser.getLengthArray(inputString)];
+
+            for (int i = 0; i < roundArray.length; i++) {
+                roundArray[i] = parser.parseBaxterItem(inputString, i);
+            }
+            round.setRoundArray(roundArray);
+
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     private String waitForInput(InputStream inputStream) {
-        ArrayList<Integer> input = new ArrayList<Integer>();
+
+        /*
+        --returns a string with response of the client.
+         */
+
+        ArrayList<Integer> input = new ArrayList<>();
+
         try {
-//            InputStream inputStream = mConnection.openInputStream();
             while (true) {
                 while (inputStream.available() > 0) {
                     System.out.println("Getting input");
@@ -181,7 +216,9 @@ public class networkControl extends AppCompatActivity {
 
                         inputstring += (char) (int) input.get(i);
                     }
+                    btSocket.getOutputStream().write("ready".getBytes());
                     System.out.println("input: " + inputstring);
+
                     return inputstring;
                 }
             }
@@ -191,11 +228,23 @@ public class networkControl extends AppCompatActivity {
         return "Error in inputstream";
     }
 
-    private void requestRoundInfo() {
-        try {
-            btSocket.getOutputStream().write("startRound".getBytes());
-        } catch (Exception e) {
-            System.out.println(e);
+
+
+    /*
+
+    //used to change textviews
+
+    private final Runnable updateTextFields = new Runnable() {
+        public void run() {
+
+            System.out.println(patient[1]);
+            System.out.println(patient[0]);
+            medicijnNaamText.setText(patient[0]);
+            patientNaamText.setText(patient[1]);
         }
-    }
+    };
+
+    private final Handler updateTextFieldsHandler = new Handler();
+
+    */
 }

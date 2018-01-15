@@ -1,12 +1,13 @@
 package com.example.sf.backend.api;
 
+/**
+ * Created by Lars Fikkers on 15-1-2018.
+ */
 
 public class BaxterItem {
-    private String patientNaam;
-    private String medicijnNaam;
-    private String dosis;
-    private String toediening;
-    private String afspraakNummer;
+    private String patientNaam, medicijnNaam, toediening, barcode, dosis;
+    private int afspraakNummer;
+    private boolean check;
 
     public String getPatientNaam() {
         return patientNaam;
@@ -24,14 +25,6 @@ public class BaxterItem {
         this.medicijnNaam = medicijnNaam;
     }
 
-    public String getDosis() {
-        return dosis;
-    }
-
-    public void setDosis(String dosis) {
-        this.dosis = dosis;
-    }
-
     public String getToediening() {
         return toediening;
     }
@@ -40,9 +33,35 @@ public class BaxterItem {
         this.toediening = toediening;
     }
 
-    public String getAfspraakNummer() {
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public String getDosis() {
+        return dosis;
+    }
+
+    public void setDosis(String dosis) {
+        this.dosis = dosis;
+    }
+
+    public int getAfspraakNummer() {
         return afspraakNummer;
     }
 
-    public void setAfspraakNummer(String afspraakNummer) { this.afspraakNummer = afspraakNummer; }
+    public void setAfspraakNummer(int afspraakNummer) {
+        this.afspraakNummer = afspraakNummer;
+    }
+
+    public boolean getCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean b) {
+        check = b;
+    }
 }

@@ -33,7 +33,12 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sf.backend.api.BaxterItem;
+import com.example.sf.backend.api.DeviceList;
+import com.example.sf.backend.api.Round;
+import com.example.sf.backend.api.StringBaxterItemParser;
 import com.example.sf.backend.api.networkControl;
+import com.example.sf.backend.entities.Baxter;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -70,6 +75,7 @@ public class scannerActivity extends Activity implements View.OnClickListener {
     BluetoothSocket btSocket = null;
     private boolean isBtConnected = false;
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    public Round round = new Round();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +93,18 @@ public class scannerActivity extends Activity implements View.OnClickListener {
         submitButton = (Button)findViewById(R.id.submitButton);
         returnButton = (Button)findViewById(R.id.returnButton);
 
+        Intent newint = getIntent();
+        address = newint.getStringExtra(DeviceList.EXTRA_ADDRESS);
+
         verifyCheck.setVisibility(View.INVISIBLE);
         findViewById(R.id.read_barcode).setOnClickListener(this);
+
+
+        final ConnectBT connector = new ConnectBT();
+        connector.onPreExecute();
+        connector.onPostExecute(connector.doInBackground());
+
+        requestRoundInfo();
 
         submitButton.setOnClickListener(new View.OnClickListener() //Submit the item that was scanned before
         {
@@ -111,6 +127,7 @@ public class scannerActivity extends Activity implements View.OnClickListener {
             public void onClick(View view)
             {
                 deviceActivity(view);
+                Disconnect();
                 finish();
             }
         });
@@ -145,14 +162,38 @@ public class scannerActivity extends Activity implements View.OnClickListener {
                 if (data != null) //checking if there's any data coming in from a barcode
                 {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-                    statusMessage.setText(R.string.barcode_success);
-                    barcodeValue.setText(barcode.displayValue); //set your own text here.
-                    informationValue.setText("Informatie over het toedienen van het medicijn");//set your own text here.
-                    topLabel.setText("iets");//set your own text here.
-                    secondBottomLabel.setText("ook iets ");//set your own text here.
-                    bottomLabel.setText("Jajaja niet verwacht he");//set your own text here.
-                    Log.d(TAG, "Barcode read: " + barcode.displayValue);
-                    verifyCheck.setVisibility(View.VISIBLE);
+                    System.out.println(barcode.displayValue);
+                    final BaxterItem baxter = round.getBaxter(barcode.displayValue);
+                    if(baxter != null)
+                    {
+                        statusMessage.setText(R.string.barcode_success);
+                        barcodeValue.setText(barcode.displayValue); //set your own text here.
+                        informationValue.setText(baxter.getToediening());//set your own text here.
+                        topLabel.setText(baxter.getMedicijnNaam());//set your own text here.
+                        secondBottomLabel.setText(baxter.getDosis());//set your own text here.
+                        bottomLabel.setText(baxter.getPatientNaam());//set your own text here.
+                        Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                        if(baxter.getCheck()){
+                            verifyCheck.setChecked(true);
+                        }
+                        else {
+                            verifyCheck.setChecked(false);
+                        }
+                        verifyCheck.setVisibility(View.VISIBLE);
+
+                        verifyCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                                if(verifyCheck.isChecked() == true) {
+                                    baxter.setCheck(true);
+                                }
+                                else {
+                                    baxter.setCheck(false);
+                                }
+                            }
+                        });
+                    }
                 } else {
                     statusMessage.setText(R.string.barcode_failure);
                     Log.d(TAG, "No barcode captured, intent data is null");
@@ -171,52 +212,6 @@ public class scannerActivity extends Activity implements View.OnClickListener {
         Intent deviceActivity = new Intent(this, com.example.sf.backend.api.DeviceList.class);
         startActivity(deviceActivity);
     }
-    private class ConnectBT extends AsyncTask<Void, Void, Void> {
-        private boolean ConnectSuccess = true; //if it's here, it's almost connected
-
-        @Override
-        protected void onPreExecute() {
-            progress = ProgressDialog.show(scannerActivity.this, "Connecting...", "Please wait!!!");  //show a progress dialog
-        }
-
-        @Override
-        protected Void doInBackground(Void... devices) {
-            try
-            {
-                if (btSocket == null || !isBtConnected)
-                {
-                    myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
-                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    btSocket.connect();//start connection
-                }
-            }
-            catch (IOException e)
-            {
-                ConnectSuccess = false;//if the try failed, you can check the exception here
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (!ConnectSuccess)
-            {
-                msg("Connection Failed. Is it a SPP Bluetooth? Try again.");
-                finish();
-            }
-            else
-            {
-                msg("Connected.");
-                isBtConnected = true;
-            }
-            progress.dismiss();
-        }
-    }
-
     private void msg(String s) {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
     }
@@ -278,10 +273,75 @@ public class scannerActivity extends Activity implements View.OnClickListener {
         }
         return "Error in inputstream";
     }
+    private class ConnectBT extends AsyncTask<Void, Void, Void>  {
+        private boolean ConnectSuccess = true; //if it's here, it's almost connected
 
+        @Override
+        protected void onPreExecute() {
+            progress = ProgressDialog.show(scannerActivity.this, "Connecting...", "Please wait!!!");  //show a progress dialog
+        }
+
+        @Override
+        protected Void doInBackground(Void... devices) {
+            try
+            {
+                if (btSocket == null || !isBtConnected)
+                {
+                    myBluetooth = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
+                    BluetoothDevice dispositivo = myBluetooth.getRemoteDevice(address);//connects to the device's address and checks if it's available
+                    btSocket = dispositivo.createInsecureRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
+                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+                    btSocket.connect();//start connection
+                }
+            }
+            catch (IOException e)
+            {
+                ConnectSuccess = false;//if the try failed, you can check the exception here
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            if (!ConnectSuccess)
+            {
+                msg("Connection Failed. Is it a SPP Bluetooth? Try again.");
+                finish();
+            }
+            else
+            {
+                msg("Connected.");
+                isBtConnected = true;
+            }
+            progress.dismiss();
+        }
+    }
     private void requestRoundInfo() {
+
+        /*
+        --sends 'startRound' to the client.
+        --catch response of client in an string.
+        --parse it into an array of Baxteritems.
+        --sets the roundarray in round object for easy access.
+         */
+
+        String inputString;
+
         try {
             btSocket.getOutputStream().write("startRound".getBytes());
+            inputString = waitForInput(btSocket.getInputStream());
+
+            StringBaxterItemParser parser = new StringBaxterItemParser();
+            System.out.println(inputString);
+            BaxterItem[] roundArray = new BaxterItem[parser.getLengthArray(inputString)];
+
+            for (int i = 0; i < roundArray.length; i++) {
+                roundArray[i] = parser.parseBaxterItem(inputString, i);
+            }
+
+            round.setRoundArray(roundArray);
         } catch (Exception e) {
             System.out.println(e);
         }

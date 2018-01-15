@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/BaxterApp.iml" filepath="$PROJECT_DIR$/BaxterApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
+      <module fileurl="file://C:\Users\User\Documents\BaxterApp\mylibrary\mylibrary.iml" filepath="C:\Users\User\Documents\BaxterApp\mylibrary\mylibrary.iml" />
     </modules>
   </component>
 </project>

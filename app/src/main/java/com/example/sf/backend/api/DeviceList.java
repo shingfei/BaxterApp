@@ -123,6 +123,7 @@ public class DeviceList extends AppCompatActivity {
             Intent i = new Intent(DeviceList.this,com.example.sf.testapp.scannerActivity.class);
             //Change the activity.
             i.putExtra(EXTRA_ADDRESS, address); //this will be received at ledControl (class) Activity
+
             startActivity(i);
         }
     };
