@@ -1,5 +1,6 @@
 package com.example.sf.backend.api;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class StringBaxterItemParser {
@@ -32,5 +33,31 @@ public class StringBaxterItemParser {
             System.out.println(e);
         }
         return length;
+    }
+
+    public String updateMessage(Round round) {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray array1 = new JSONArray(), array2 = new JSONArray();
+
+        for (int i = 0; i < round.roundArray.length; i++) {
+            if (round.roundArray[i].getCheck()) {
+                try {
+                    array1.put(round.roundArray[i].getAfspraakNummer());
+                    array2.put(2);
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }
+        try {
+            jsonObject.put("afspraakNummer", array1);
+            jsonObject.put("verzorgerNummer", array2);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return jsonObject.toString();
     }
 }

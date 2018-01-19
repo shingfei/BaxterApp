@@ -111,14 +111,7 @@ public class scannerActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View view)
             {
-                if(verifyCheck.isChecked() == true)
-                {
-                    System.out.println("submit this one");
-                }
-                else
-                {
-                    System.out.println("uncheck this one");
-                }
+                updateSql();
             }
         });
 
@@ -246,11 +239,15 @@ public class scannerActivity extends Activity implements View.OnClickListener {
             System.out.println(e);
         }
     }
-
     private String waitForInput(InputStream inputStream) {
-        ArrayList<Integer> input = new ArrayList<Integer>();
+
+        /*
+        --returns a string with response of the client.
+         */
+
+        ArrayList<Integer> input = new ArrayList<>();
+
         try {
-//            InputStream inputStream = mConnection.openInputStream();
             while (true) {
                 while (inputStream.available() > 0) {
                     System.out.println("Getting input");
@@ -265,6 +262,7 @@ public class scannerActivity extends Activity implements View.OnClickListener {
                         inputstring += (char) (int) input.get(i);
                     }
                     System.out.println("input: " + inputstring);
+
                     return inputstring;
                 }
             }
@@ -333,15 +331,47 @@ public class scannerActivity extends Activity implements View.OnClickListener {
             btSocket.getOutputStream().write("startRound".getBytes());
             inputString = waitForInput(btSocket.getInputStream());
 
+            btSocket.getOutputStream().write("ready".getBytes());
             StringBaxterItemParser parser = new StringBaxterItemParser();
-            System.out.println(inputString);
+
             BaxterItem[] roundArray = new BaxterItem[parser.getLengthArray(inputString)];
 
             for (int i = 0; i < roundArray.length; i++) {
                 roundArray[i] = parser.parseBaxterItem(inputString, i);
             }
-
             round.setRoundArray(roundArray);
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void updateSql() {
+        StringBaxterItemParser parser = new StringBaxterItemParser();
+        String msg = parser.updateMessage(round);
+        try {
+            String inputString;
+
+            btSocket.getOutputStream().write("update".getBytes());
+
+            inputString = waitForInput(btSocket.getInputStream());
+
+            while (!inputString.equals("ready")) {
+                inputString = waitForInput(btSocket.getInputStream());
+            }
+
+            inputString = null;
+
+            btSocket.getOutputStream().write(msg.getBytes());
+
+            inputString = waitForInput(btSocket.getInputStream());
+
+            while (!inputString.equals("ready")) {}
+
+
+
+            btSocket.getOutputStream().write("stop".getBytes());
         } catch (Exception e) {
             System.out.println(e);
         }

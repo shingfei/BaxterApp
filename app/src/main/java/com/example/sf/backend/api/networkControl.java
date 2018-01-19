@@ -177,8 +177,11 @@ public class networkControl extends AppCompatActivity {
         String inputString;
 
         try {
-            btSocket.getOutputStream().write("startRound".getBytes());
+            btSocket.getOutputStream().write("ready".getBytes());
+            System.out.println("Stuur ready");
             inputString = waitForInput(btSocket.getInputStream());
+
+            //btSocket.getOutputStream().write("ready".getBytes());
             StringBaxterItemParser parser = new StringBaxterItemParser();
 
             BaxterItem[] roundArray = new BaxterItem[parser.getLengthArray(inputString)];
@@ -216,7 +219,6 @@ public class networkControl extends AppCompatActivity {
 
                         inputstring += (char) (int) input.get(i);
                     }
-                    btSocket.getOutputStream().write("ready".getBytes());
                     System.out.println("input: " + inputstring);
 
                     return inputstring;
@@ -227,7 +229,6 @@ public class networkControl extends AppCompatActivity {
         }
         return "Error in inputstream";
     }
-
 
 
     /*
